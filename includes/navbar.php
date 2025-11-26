@@ -44,10 +44,10 @@ if ($current_path == '/' || $current_path == '/index.php' || $current_path == ''
 <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand d-flex align-items-start" href="<?php echo BASE_URL; ?>/" style="padding-top: 0.5rem;">
-            <img src="<?php echo BASE_URL; ?>/public/img/logo-pnm.png" alt="Logo Politeknik Negeri Malang" class="navbar-logo me-3">
+            <img src="<?php echo BASE_URL . get_content('navbar', 'logo_path', '/public/img/logo-pnm.png'); ?>" alt="Logo Politeknik Negeri Malang" class="navbar-logo me-3">
             <div class="brand-text">
-                <div class="fw-bold text-primary" style="font-size: 1rem; line-height: 1.3;">Jurusan Teknologi Informasi</div>
-                <div class="text-muted" style="font-size: 0.85rem; line-height: 1.3;">Politeknik Negeri Malang</div>
+                <div class="fw-bold text-primary" style="font-size: 1rem; line-height: 1.3;"><?php echo htmlspecialchars(get_content('navbar', 'brand_title', 'Jurusan Teknologi Informasi')); ?></div>
+                <div class="text-muted" style="font-size: 0.85rem; line-height: 1.3;"><?php echo htmlspecialchars(get_content('navbar', 'brand_subtitle', 'Politeknik Negeri Malang')); ?></div>
             </div>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

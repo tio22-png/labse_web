@@ -10,8 +10,8 @@ include 'includes/navbar.php';
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 hero-content" data-aos="fade-right">
-                <h1 class="hero-title">Laboratorium Software Engineering</h1>
-                <p class="hero-subtitle">Berinovasi, Berkolaborasi, dan Berkembang bersama Teknologi Masa Depan</p>
+                <h1 class="hero-title"><?php echo htmlspecialchars(get_content('hero', 'title', 'Laboratorium Software Engineering')); ?></h1>
+                <p class="hero-subtitle"><?php echo htmlspecialchars(get_content('hero', 'subtitle', 'Berinovasi, Berkolaborasi, dan Berkembang bersama Teknologi Masa Depan')); ?></p>
                 <div class="mt-4">
                     <a href="<?php echo BASE_URL; ?>/views/tentang.php" class="btn btn-primary btn-lg me-3">
                         <i class="bi bi-info-circle me-2"></i>Tentang Kami
@@ -34,8 +34,8 @@ include 'includes/navbar.php';
 <section class="content-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title">Tentang Lab SE</h2>
-            <p class="lead text-muted">Pusat Keunggulan Pengembangan Perangkat Lunak</p>
+            <h2 class="section-title"><?php echo htmlspecialchars(get_content('about', 'title', 'Tentang Lab SE')); ?></h2>
+            <p class="lead text-muted"><?php echo htmlspecialchars(get_content('about', 'subtitle', 'Pusat Keunggulan Pengembangan Perangkat Lunak')); ?></p>
         </div>
         <div class="row g-4">
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
@@ -44,8 +44,8 @@ include 'includes/navbar.php';
                         <div class="mb-3">
                             <i class="bi bi-trophy text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title">Unggul dalam Penelitian</h4>
-                        <p class="card-text">Melakukan penelitian inovatif dalam bidang rekayasa perangkat lunak dan teknologi informasi terkini.</p>
+                        <h4 class="card-title"><?php echo htmlspecialchars(get_content('about', 'card1_title', 'Unggul dalam Penelitian')); ?></h4>
+                        <p class="card-text"><?php echo htmlspecialchars(get_content('about', 'card1_desc', 'Melakukan penelitian inovatif dalam bidang rekayasa perangkat lunak dan teknologi informasi terkini.')); ?></p>
                     </div>
                 </div>
             </div>
@@ -55,8 +55,8 @@ include 'includes/navbar.php';
                         <div class="mb-3">
                             <i class="bi bi-people text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title">Tim Berkualitas</h4>
-                        <p class="card-text">Didukung oleh dosen dan peneliti berpengalaman dengan sertifikasi internasional.</p>
+                        <h4 class="card-title"><?php echo htmlspecialchars(get_content('about', 'card2_title', 'Tim Berkualitas')); ?></h4>
+                        <p class="card-text"><?php echo htmlspecialchars(get_content('about', 'card2_desc', 'Didukung oleh dosen dan peneliti berpengalaman dengan sertifikasi internasional.')); ?></p>
                     </div>
                 </div>
             </div>
@@ -66,8 +66,8 @@ include 'includes/navbar.php';
                         <div class="mb-3">
                             <i class="bi bi-lightbulb text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title">Inovasi Berkelanjutan</h4>
-                        <p class="card-text">Menghasilkan solusi software inovatif yang memberikan dampak nyata bagi masyarakat.</p>
+                        <h4 class="card-title"><?php echo htmlspecialchars(get_content('about', 'card3_title', 'Inovasi Berkelanjutan')); ?></h4>
+                        <p class="card-text"><?php echo htmlspecialchars(get_content('about', 'card3_desc', 'Menghasilkan solusi software inovatif yang memberikan dampak nyata bagi masyarakat.')); ?></p>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@ include 'includes/navbar.php';
                 echo ' | <i class="bi bi-calendar ms-2 me-2"></i>' . date('d M Y', strtotime($row['created_at']));
                 echo '</p>';
                 echo '<p class="card-text">' . substr(htmlspecialchars($row['isi']), 0, 150) . '...</p>';
-                echo '<a href="' . BASE_URL . '/pages/blog/detail.php?id=' . $row['id'] . '" class="btn btn-outline-primary">Baca Selengkapnya</a>';
+                echo '<a href="' . BASE_URL . '/views/blog/detail.php?id=' . $row['id'] . '" class="btn btn-outline-primary">Baca Selengkapnya</a>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';
@@ -134,7 +134,7 @@ include 'includes/navbar.php';
             ?>
         </div>
         <div class="text-center mt-5" data-aos="fade-up">
-            <a href="<?php echo BASE_URL; ?>/pages/blog/" class="btn btn-primary btn-lg">
+            <a href="<?php echo BASE_URL; ?>/views/blog/" class="btn btn-primary btn-lg">
                 Lihat Semua Artikel <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>

@@ -19,85 +19,47 @@ include '../includes/navbar.php';
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">2024 - Q1</span>
-                            <h4>Modernisasi Infrastruktur</h4>
-                            <p class="text-muted mb-0">Upgrade peralatan laboratorium dan implementasi cloud infrastructure untuk mendukung pembelajaran dan penelitian yang lebih efektif.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">2024 - Q2</span>
-                            <h4>Program Sertifikasi Internasional</h4>
-                            <p class="text-muted mb-0">Meluncurkan program sertifikasi AWS, Azure, dan Google Cloud untuk meningkatkan kompetensi mahasiswa dan dosen.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">2024 - Q3</span>
-                            <h4>Kemitraan Industri</h4>
-                            <p class="text-muted mb-0">Membangun kemitraan strategis dengan perusahaan teknologi untuk proyek kolaborasi dan program magang.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">2024 - Q4</span>
-                            <h4>Penelitian AI & Machine Learning</h4>
-                            <p class="text-muted mb-0">Inisiasi program penelitian fokus pada Artificial Intelligence dan Machine Learning dengan publikasi di jurnal internasional.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-success mb-2">2025 - Q1</span>
-                            <h4>Peluncuran Inkubator Startup</h4>
-                            <p class="text-muted mb-0">Membuka inkubator untuk mendukung mahasiswa mengembangkan ide bisnis teknologi mereka.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="500">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-success mb-2">2025 - Q2</span>
-                            <h4>Konferensi Internasional</h4>
-                            <p class="text-muted mb-0">Menyelenggarakan konferensi internasional tentang Software Engineering dan mengundang pembicara dari berbagai negara.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="600">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-success mb-2">2025 - Q3</span>
-                            <h4>Expansion Program</h4>
-                            <p class="text-muted mb-0">Perluasan fasilitas laboratorium dan penambahan program penelitian baru dalam bidang Blockchain dan IoT.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="700">
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge bg-info mb-2">2026 - 2030</span>
-                            <h4>Menjadi Center of Excellence</h4>
-                            <p class="text-muted mb-0">Mewujudkan Lab SE sebagai Center of Excellence di tingkat nasional dan internasional dengan kontribusi signifikan dalam riset dan industri.</p>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                // Fetch Roadmap items
+                $query = "SELECT * FROM lab_profile WHERE kategori = 'roadmap' ORDER BY id";
+                $result = pg_query($conn, $query);
+                $delay = 0;
+                $count = 0;
+                
+                while ($row = pg_fetch_assoc($result)) {
+                    $badge_class = 'bg-primary';
+                    if ($count > 3) $badge_class = 'bg-success';
+                    if ($count > 6) $badge_class = 'bg-info';
+                    
+                    echo '<div class="timeline-item" data-aos="fade-up" data-aos-delay="' . $delay . '">';
+                    echo '<div class="card">';
+                    echo '<div class="card-body">';
+                    echo '<span class="badge ' . $badge_class . ' mb-2">' . htmlspecialchars($row['judul']) . '</span>';
+                    echo '<h4>' . htmlspecialchars($row['konten']) . '</h4>'; // Note: In DB seed, content was description. Wait, in seed I put "Title: Description".
+                    // Let's adjust: In seed I put '2024 - Q1' as Title, and 'Modernisasi Infrastruktur: Upgrade...' as Content.
+                    // So here: Title is the Year/Quarter (Badge), Content is the Description.
+                    // Actually, looking at seed: ('roadmap', '2024 - Q1', 'Modernisasi Infrastruktur: Upgrade...')
+                    // The hardcoded view had: Badge=Year, H4=Title, P=Desc.
+                    // My seed combined Title and Desc into Content.
+                    // Let's split it for better display if possible, or just display content as paragraph.
+                    // For now, let's just display content as paragraph and maybe bold the first part if it has a colon.
+                    
+                    $content_parts = explode(':', $row['konten'], 2);
+                    if (count($content_parts) == 2) {
+                        echo '<h4>' . htmlspecialchars(trim($content_parts[0])) . '</h4>';
+                        echo '<p class="text-muted mb-0">' . htmlspecialchars(trim($content_parts[1])) . '</p>';
+                    } else {
+                        echo '<p class="text-muted mb-0">' . htmlspecialchars($row['konten']) . '</p>';
+                    }
+                    
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                    
+                    $delay += 100;
+                    $count++;
+                }
+                ?>
 
             </div>
         </div>

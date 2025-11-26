@@ -5,7 +5,7 @@
                 <h5 class="fw-bold mb-3">
                     <i class="bi bi-code-square me-2"></i>Lab Software Engineering
                 </h5>
-                <p class="text-light">Pusat keunggulan dalam pengembangan perangkat lunak dan penelitian teknologi informasi.</p>
+                <p class="text-light"><?php echo htmlspecialchars(get_content('footer', 'description', 'Pusat keunggulan dalam pengembangan perangkat lunak dan penelitian teknologi informasi.')); ?></p>
             </div>
             <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
                 <h5 class="fw-bold mb-3">Quick Links</h5>
@@ -19,21 +19,29 @@
             <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
                 <h5 class="fw-bold mb-3">Kontak & Media Sosial</h5>
                 <p class="text-light mb-3">
-                    <i class="bi bi-envelope me-2"></i>labse@university.ac.id<br>
-                    <i class="bi bi-phone me-2"></i>+62 21 1234 5678
+                    <i class="bi bi-envelope me-2"></i><?php echo htmlspecialchars(get_content('footer', 'email', 'labse@university.ac.id')); ?><br>
+                    <i class="bi bi-phone me-2"></i><?php echo htmlspecialchars(get_content('footer', 'phone', '+62 21 1234 5678')); ?>
                 </p>
                 <div class="social-icons">
-                    <a href="#" class="text-white me-3 fs-4"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white me-3 fs-4"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="text-white me-3 fs-4"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white me-3 fs-4"><i class="bi bi-linkedin"></i></a>
-                    <a href="#" class="text-white fs-4"><i class="bi bi-youtube"></i></a>
+                    <?php 
+                    $fb = get_content('footer', 'social_facebook', '');
+                    $tw = get_content('footer', 'social_twitter', '');
+                    $ig = get_content('footer', 'social_instagram', '');
+                    $li = get_content('footer', 'social_linkedin', '');
+                    $yt = get_content('footer', 'social_youtube', '');
+                    
+                    if (!empty($fb) && $fb !== '#') echo '<a href="' . htmlspecialchars($fb) . '" class="text-white me-3 fs-4" target="_blank"><i class="bi bi-facebook"></i></a>';
+                    if (!empty($tw) && $tw !== '#') echo '<a href="' . htmlspecialchars($tw) . '" class="text-white me-3 fs-4" target="_blank"><i class="bi bi-twitter-x"></i></a>';
+                    if (!empty($ig) && $ig !== '#') echo '<a href="' . htmlspecialchars($ig) . '" class="text-white me-3 fs-4" target="_blank"><i class="bi bi-instagram"></i></a>';
+                    if (!empty($li) && $li !== '#') echo '<a href="' . htmlspecialchars($li) . '" class="text-white me-3 fs-4" target="_blank"><i class="bi bi-linkedin"></i></a>';
+                    if (!empty($yt) && $yt !== '#') echo '<a href="' . htmlspecialchars($yt) . '" class="text-white fs-4" target="_blank"><i class="bi bi-youtube"></i></a>';
+                    ?>
                 </div>
             </div>
         </div>
         <hr class="border-secondary my-4">
         <div class="text-center">
-            <p class="mb-0">&copy; <?php echo date('Y'); ?> Lab Software Engineering. All rights reserved.</p>
+            <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(get_content('footer', 'copyright', 'Lab Software Engineering. All rights reserved.')); ?></p>
         </div>
     </div>
 </footer>

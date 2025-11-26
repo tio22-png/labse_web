@@ -66,7 +66,7 @@ $result = pg_query($conn, $query);
 </section>
 
 <!-- Newsletter Section -->
-<section class="content-section bg-light-section">
+<!-- <section class="content-section bg-light-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -87,7 +87,7 @@ $result = pg_query($conn, $query);
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Categories Section -->
 <section class="content-section">

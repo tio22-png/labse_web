@@ -3,6 +3,23 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Fetch Landing Page Content
+$landing_content = [];
+if (isset($conn)) {
+    $query = "SELECT * FROM landing_page_content";
+    $result = pg_query($conn, $query);
+    if ($result) {
+        while ($row = pg_fetch_assoc($result)) {
+            $landing_content[$row['section_name']][$row['key_name']] = $row['content_value'];
+        }
+    }
+}
+
+function get_content($section, $key, $default = '') {
+    global $landing_content;
+    return isset($landing_content[$section][$key]) ? $landing_content[$section][$key] : $default;
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">

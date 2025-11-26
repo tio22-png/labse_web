@@ -1,0 +1,10 @@
+<?php
+require_once 'core/database.php';
+
+$query = "SELECT key_name, content_value FROM landing_page_content WHERE section_name = 'footer' AND key_name LIKE 'social_%'";
+$result = pg_query($conn, $query);
+
+while ($row = pg_fetch_assoc($result)) {
+    echo $row['key_name'] . ": [" . $row['content_value'] . "]\n";
+}
+?>

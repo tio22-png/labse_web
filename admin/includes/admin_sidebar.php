@@ -61,10 +61,16 @@
         
         <div class="menu-label">Website</div>
         
-        <a href="<?php echo BASE_URL; ?>/admin/view_website.php" class="menu-item">
-            <i class="bi bi-globe"></i>
-            <span>Lihat Website</span>
+        <a href="<?php echo BASE_URL; ?>/admin/manage_landing.php" class="menu-item <?php echo basename($_SERVER['PHP_SELF']) == 'manage_landing.php' ? 'active' : ''; ?>">
+            <i class="bi bi-layout-text-window-reverse"></i>
+            <span>Landing Page</span>
         </a>
+        
+        <a href="<?php echo BASE_URL; ?>/admin/manage_lab_profile.php" class="menu-item <?php echo basename($_SERVER['PHP_SELF']) == 'manage_lab_profile.php' ? 'active' : ''; ?>">
+            <i class="bi bi-building-gear"></i>
+            <span>Profil Lab</span>
+        </a>
+        
         
         <a href="<?php echo BASE_URL; ?>/admin/logout.php" class="menu-item">
             <i class="bi bi-box-arrow-right"></i>

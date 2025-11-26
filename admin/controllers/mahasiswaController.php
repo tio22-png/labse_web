@@ -200,23 +200,69 @@ class MahasiswaController {
     
     // Approve mahasiswa
     public function approve($id, $admin_id) {
-        $query = "UPDATE mahasiswa 
-                  SET status_approval = 'approved', 
-                      approved_by = $1, 
-                      approved_at = NOW() 
-                  WHERE id = $2";
-        $result = pg_query_params($this->conn, $query, array($admin_id, $id));
+        // First, get mahasiswa data
+        $query_get = "SELECT * FROM mahasiswa WHERE id = $1";
+        $result_get = pg_query_params($this->conn, $query_get, array($id));
+        $mahasiswa = pg_fetch_assoc($result_get);
         
-        if ($result) {
-            $affected_rows = pg_affected_rows($result);
-            if ($affected_rows > 0) {
-                return ['success' => true, 'message' => 'Mahasiswa berhasil disetujui!'];
-            } else {
-                return ['success' => false, 'message' => 'Mahasiswa tidak ditemukan atau sudah disetujui!'];
+        if (!$mahasiswa) {
+            return ['success' => false, 'message' => 'Data mahasiswa tidak ditemukan!'];
+        }
+        
+        // Start transaction
+        pg_query($this->conn, "BEGIN");
+        
+        try {
+            // 1. Update status
+            $query_update = "UPDATE mahasiswa 
+                      SET status_approval = 'approved', 
+                          approved_by = $1, 
+                          approved_at = NOW() 
+                      WHERE id = $2";
+            $result_update = pg_query_params($this->conn, $query_update, array($admin_id, $id));
+            
+            if (!$result_update) {
+                throw new Exception("Gagal update status mahasiswa");
             }
-        } else {
-            $error = pg_last_error($this->conn);
-            return ['success' => false, 'message' => 'Gagal menyetujui mahasiswa: ' . $error];
+            
+            // 2. Create user account
+            // Generate username from name (lowercase, remove spaces)
+            $username = strtolower(str_replace(' ', '', $mahasiswa['nama']));
+            // Ensure unique username by appending random number if needed
+            // For simplicity in this step, we'll just append a random 3 digit number if it's too common, 
+            // but let's try to be smarter: check if exists first.
+            
+            $check_user = pg_query_params($this->conn, "SELECT COUNT(*) FROM users WHERE username = $1", array($username));
+            if (pg_fetch_result($check_user, 0, 0) > 0) {
+                $username = $username . rand(100, 999);
+            }
+            
+            $password = password_hash('mahasiswa123', PASSWORD_DEFAULT);
+            $email = $mahasiswa['email'];
+            
+            // Check if email already exists in users
+            $check_email = pg_query_params($this->conn, "SELECT COUNT(*) FROM users WHERE email = $1", array($email));
+            if (pg_fetch_result($check_email, 0, 0) > 0) {
+                // User already exists with this email, maybe just update role or reference?
+                // For now, let's assume we skip creation if email exists to avoid error
+                // or throw exception
+                 throw new Exception("Email sudah terdaftar sebagai user!");
+            }
+            
+            $query_user = "INSERT INTO users (username, email, password, role, reference_id, is_active, created_at) 
+                           VALUES ($1, $2, $3, 'mahasiswa', $4, TRUE, NOW())";
+            $result_user = pg_query_params($this->conn, $query_user, array($username, $email, $password, $id));
+            
+            if (!$result_user) {
+                throw new Exception("Gagal membuat user account: " . pg_last_error($this->conn));
+            }
+            
+            pg_query($this->conn, "COMMIT");
+            return ['success' => true, 'message' => 'Mahasiswa berhasil disetujui dan akun user telah dibuat (Username: ' . $username . ', Password: mahasiswa123)'];
+            
+        } catch (Exception $e) {
+            pg_query($this->conn, "ROLLBACK");
+            return ['success' => false, 'message' => 'Gagal: ' . $e->getMessage()];
         }
     }
     
