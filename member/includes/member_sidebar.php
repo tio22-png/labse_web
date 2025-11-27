@@ -42,6 +42,16 @@
             <span>Buat Artikel</span>
         </a>
 
+        <a href="<?php echo BASE_URL; ?>/member/my_pengabdian.php" class="menu-item <?php echo in_array(basename($_SERVER['PHP_SELF']), ['my_pengabdian.php', 'edit_pengabdian.php', 'view_pengabdian.php']) ? 'active' : ''; ?>">
+            <i class="bi bi-people-fill"></i>
+            <span>Pengabdian Saya</span>
+        </a>
+        
+        <a href="<?php echo BASE_URL; ?>/member/add_pengabdian.php" class="menu-item <?php echo basename($_SERVER['PHP_SELF']) == 'add_pengabdian.php' ? 'active' : ''; ?>">
+            <i class="bi bi-plus-square"></i>
+            <span>Tambah Pengabdian</span>
+        </a>
+
         <div class="menu-label">Bimbingan</div>
 
         <a href="<?php echo BASE_URL; ?>/member/review_penelitian.php" class="menu-item <?php echo in_array(basename($_SERVER['PHP_SELF']), ['review_penelitian.php', 'detail_penelitian.php', 'detail_penelitian_clean.php']) ? 'active' : ''; ?>">

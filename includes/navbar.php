@@ -25,6 +25,8 @@ if ($current_path == '/' || $current_path == '/index.php' || $current_path == ''
     $current_page = 'home';
 } elseif (strpos($current_path, '/views/blog/') !== false || strpos($current_path, 'blog') !== false) {
     $current_page = 'blog';
+} elseif (strpos($current_path, '/views/pengabdian/') !== false || strpos($current_path, 'pengabdian') !== false) {
+    $current_page = 'pengabdian';
 } elseif (strpos($current_path, '/views/personil/') !== false || strpos($current_path, 'personil') !== false) {
     $current_page = 'personil';
 } elseif (strpos($current_path, '/views/recruitment/') !== false || strpos($current_path, 'recruitment') !== false) {
@@ -74,6 +76,9 @@ if ($current_path == '/' || $current_path == '/index.php' || $current_path == ''
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo $current_page == 'blog' ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>/views/blog/">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $current_page == 'pengabdian' ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>/views/pengabdian/">Pengabdian</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo $current_page == 'recruitment' ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>/views/recruitment/">Recruitment</a>

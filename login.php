@@ -210,20 +210,20 @@ pg_close($conn);
             box-shadow: 0 10px 25px rgba(74, 144, 226, 0.3);
         }
         
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .back-link a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
+        .btn-back {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
         
-        .back-link a:hover {
-            opacity: 0.8;
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.3);
         }
         
         .alert {
@@ -329,13 +329,13 @@ pg_close($conn);
                         <i class="bi bi-box-arrow-in-right me-2"></i>Login
                     </button>
                 </div>
+                
+                <div class="d-grid mt-3">
+                    <a href="<?php echo BASE_URL; ?>" class="btn btn-outline-light btn-back">
+                        <i class="bi bi-arrow-left me-2"></i>Kembali ke Landing Page
+                    </a>
+                </div>
             </form>
-            
-            <div class="back-link">
-                <a href="<?php echo BASE_URL; ?>">
-                    <i class="bi bi-arrow-left me-1"></i>Kembali ke Beranda
-                </a>
-            </div>
         </div>
     </div>
     

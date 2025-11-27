@@ -141,6 +141,48 @@ include 'includes/navbar.php';
     </div>
 </section>
 
+<!-- Pengabdian Masyarakat Section -->
+<section class="content-section bg-light-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Pengabdian Masyarakat & Pelatihan</h2>
+            <p class="lead text-muted">Kegiatan pengabdian pada masyarakat yang kami laksanakan</p>
+        </div>
+        <div class="row g-4">
+            <?php
+            $query_pengabdian = "SELECT * FROM pengabdian ORDER BY tanggal DESC LIMIT 3";
+            $result_pengabdian = pg_query($conn, $query_pengabdian);
+            $delay = 0;
+            while ($pengabdian = pg_fetch_assoc($result_pengabdian)) {
+                $delay += 100;
+                echo '<div class="col-md-4" data-aos="fade-up" data-aos-delay="' . $delay . '">';
+                echo '<div class="card h-100">';
+                if ($pengabdian['gambar']) {
+                    echo '<img src="' . BASE_URL . '/public/uploads/pengabdian/' . htmlspecialchars($pengabdian['gambar']) . '" class="card-img-top" style="height: 200px; object-fit: cover;" alt="' . htmlspecialchars($pengabdian['judul']) . '">';
+                }
+                echo '<div class="card-body">';
+                echo '<h5 class="card-title">' . htmlspecialchars($pengabdian['judul']) . '</h5>';
+                echo '<p class="text-muted small mb-3">';
+                echo '<i class="bi bi-calendar me-2"></i>' . date('d M Y', strtotime($pengabdian['tanggal']));
+                echo ' | <i class="bi bi-geo-alt ms-2 me-2"></i>' . htmlspecialchars($pengabdian['lokasi']);
+                echo '</p>';
+                $deskripsi_short = strip_tags($pengabdian['deskripsi']);
+                echo '<p class="card-text">' . substr($deskripsi_short, 0, 120) . '...</p>';
+                echo '<a href="' . BASE_URL . '/views/pengabdian/detail.php?id=' . $pengabdian['id'] . '" class="btn btn-outline-primary">Lihat Detail</a>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+            ?>
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="<?php echo BASE_URL; ?>/views/pengabdian/" class="btn btn-success btn-lg">
+                Lihat Semua Kegiatan <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="content-section bg-light-section">
     <div class="container text-center" data-aos="zoom-in">
