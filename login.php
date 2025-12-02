@@ -83,6 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['member_session_token'] = $session_token;
                     $_SESSION['member_last_activity'] = time();
                     
+                    // Log activity: Login
+                    require_once 'includes/activity_logger.php';
+                    log_activity($conn, $detail['id'], $detail['nama'], 'LOGIN', 
+                        'Login ke dashboard', null, null);
+                    
                     $redirect_url = 'member/index.php';
                     
                 } elseif ($user['role'] === 'mahasiswa') {

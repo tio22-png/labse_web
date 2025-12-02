@@ -86,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = pg_query_params($conn, $query, array($judul, $isi, $gambar, $artikel_id, $member_id));
             
             if ($result) {
+                // Log activity: Edit Article
+                require_once '../includes/activity_logger.php';
+                log_activity($conn, $member_id, $_SESSION['member_nama'], 'EDIT_ARTICLE', 
+                    "Mengedit artikel: {$judul}", 'artikel', $artikel_id);
+                
                 // Refresh artikel data after successful update
                 $result_check = pg_query_params($conn, $query_check, array($artikel_id, $member_id));
                 if ($result_check && pg_num_rows($result_check) > 0) {

@@ -64,10 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Insert artikel dengan personil_id only if no errors
         if (empty($error)) {
             $query = "INSERT INTO artikel (judul, isi, penulis, gambar, personil_id) 
-                      VALUES ($1, $2, $3, $4, $5)";
+                      VALUES ($1, $2, $3, $4, $5) RETURNING id";
             $result = pg_query_params($conn, $query, array($judul, $isi, $penulis, $gambar, $member_id));
             
             if ($result) {
+                // Get inserted article ID
+                $row = pg_fetch_assoc($result);
+                $artikel_id = $row['id'];
+                
+                // Log activity: Create Article
+                require_once '../includes/activity_logger.php';
+                log_activity($conn, $member_id, $member_nama, 'CREATE_ARTICLE', 
+                    "Membuat artikel baru: {$judul}", 'artikel', $artikel_id);
+                
                 header('Location: my_articles.php?success=add');
                 exit();
             } else {

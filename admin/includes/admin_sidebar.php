@@ -69,6 +69,11 @@
         
         <div class="menu-label">System</div>
         
+        <a href="<?php echo BASE_URL; ?>/admin/activity_logs.php" class="menu-item <?php echo basename($_SERVER['PHP_SELF']) == 'activity_logs.php' ? 'active' : ''; ?>">
+            <i class="bi bi-clock-history"></i>
+            <span>Riwayat Aktivitas</span>
+        </a>
+        
         <a href="<?php echo BASE_URL; ?>/admin/views/manage_users.php" class="menu-item <?php echo basename($_SERVER['PHP_SELF']) == 'manage_users.php' ? 'active' : ''; ?>">
             <i class="bi bi-people-fill"></i>
             <span>Manajemen User</span>

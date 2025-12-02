@@ -61,12 +61,20 @@ class MemberProdukController {
                 // Insert to database - CRITICAL: Always use logged in member ID
                 if (empty($error)) {
                     $query = "INSERT INTO produk (nama_produk, deskripsi, tahun, kategori, teknologi, gambar, link_demo, link_repository, personil_id) 
-                              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+                              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
                     $result = pg_query_params($this->conn, $query, array(
                         $nama_produk, $deskripsi, $tahun, $kategori, $teknologi, $gambar, $link_demo, $link_repository, $this->member_id
                     ));
                     
                     if ($result) {
+                        $row = pg_fetch_assoc($result);
+                        $produk_id = $row['id'];
+                        
+                        // Log activity: Create Produk
+                        require_once __DIR__ . '/../../includes/activity_logger.php';
+                        log_activity($this->conn, $this->member_id, $_SESSION['member_nama'], 'CREATE_PRODUK', 
+                            "Membuat produk baru: {$nama_produk}", 'produk', $produk_id);
+                        
                         header('Location: my_produk.php?success=add');
                         exit();
                     } else {
@@ -141,6 +149,11 @@ class MemberProdukController {
                 ));
                 
                 if ($result && pg_affected_rows($result) > 0) {
+                    // Log activity: Edit Produk
+                    require_once __DIR__ . '/../../includes/activity_logger.php';
+                    log_activity($this->conn, $this->member_id, $_SESSION['member_nama'], 'EDIT_PRODUK', 
+                        "Mengedit produk: {$nama_produk}", 'produk', $id);
+                    
                     header('Location: my_produk.php?success=edit');
                     exit();
                 } else {
@@ -156,11 +169,16 @@ class MemberProdukController {
     public function delete($id) {
         if ($id) {
             // Get produk data - CRITICAL: Check ownership
-            $query = "SELECT gambar FROM produk WHERE id = $1 AND personil_id = $2";
+            $query = "SELECT nama_produk, gambar FROM produk WHERE id = $1 AND personil_id = $2";
             $result = pg_query_params($this->conn, $query, array($id, $this->member_id));
             $produk = pg_fetch_assoc($result);
             
             if ($produk) {
+                // Log activity: Delete Produk (before deletion)
+                require_once __DIR__ . '/../../includes/activity_logger.php';
+                log_activity($this->conn, $this->member_id, $_SESSION['member_nama'], 'DELETE_PRODUK', 
+                    "Menghapus produk: {$produk['nama_produk']}", 'produk', $id);
+                
                 // Delete from database
                 $delete_query = "DELETE FROM produk WHERE id = $1 AND personil_id = $2";
                 $delete_result = pg_query_params($this->conn, $delete_query, array($id, $this->member_id));

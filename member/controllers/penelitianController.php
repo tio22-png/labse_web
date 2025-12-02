@@ -74,12 +74,20 @@ class MemberPenelitianController {
                 if (empty($error)) {
                     // Insert penelitian dengan personil_id
                     $query = "INSERT INTO hasil_penelitian (judul, deskripsi, tahun, kategori, abstrak, gambar, file_pdf, link_publikasi, personil_id) 
-                              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+                              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
                     $result = pg_query_params($this->conn, $query, array(
                         $judul, $deskripsi, $tahun, $kategori, $abstrak, $gambar, $file_pdf, $link_publikasi, $member_id
                     ));
                     
                     if ($result) {
+                        $row = pg_fetch_assoc($result);
+                        $penelitian_id = $row['id'];
+                        
+                        // Log activity: Create Penelitian
+                        require_once __DIR__ . '/../../includes/activity_logger.php';
+                        log_activity($this->conn, $member_id, $_SESSION['member_nama'], 'CREATE_PENELITIAN', 
+                            "Membuat penelitian baru: {$judul}", 'penelitian', $penelitian_id);
+                        
                         header('Location: my_penelitian.php?success=add');
                         exit();
                     } else {
@@ -173,6 +181,11 @@ class MemberPenelitianController {
                 ));
                 
                 if ($result) {
+                    // Log activity: Edit Penelitian
+                    require_once __DIR__ . '/../../includes/activity_logger.php';
+                    log_activity($this->conn, $member_id, $_SESSION['member_nama'], 'EDIT_PENELITIAN', 
+                        "Mengedit penelitian: {$judul}", 'penelitian', $id);
+                    
                     header('Location: my_penelitian.php?success=edit');
                     exit();
                 } else {
@@ -190,11 +203,16 @@ class MemberPenelitianController {
         
         if ($id) {
             // Get penelitian data first to verify ownership and delete files
-            $query = "SELECT gambar, file_pdf FROM hasil_penelitian WHERE id = $1 AND personil_id = $2";
+            $query = "SELECT judul, gambar, file_pdf FROM hasil_penelitian WHERE id = $1 AND personil_id = $2";
             $result = pg_query_params($this->conn, $query, array($id, $member_id));
             $penelitian = pg_fetch_assoc($result);
             
             if ($penelitian) {
+                // Log activity: Delete Penelitian (before deletion)
+                require_once __DIR__ . '/../../includes/activity_logger.php';
+                log_activity($this->conn, $member_id, $_SESSION['member_nama'], 'DELETE_PENELITIAN', 
+                    "Menghapus penelitian: {$penelitian['judul']}", 'penelitian', $id);
+                
                 // Delete from database
                 $delete_query = "DELETE FROM hasil_penelitian WHERE id = $1 AND personil_id = $2";
                 $delete_result = pg_query_params($this->conn, $delete_query, array($id, $member_id));
